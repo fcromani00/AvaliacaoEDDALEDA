@@ -1,0 +1,105 @@
+#include <iostream>
+#include <stdlib.h>
+
+using namespace std;
+
+
+struct Node {
+  int number;
+  struct Node *next;
+};
+
+struct Stack {
+  struct Node *top;
+  int max_items;
+  int qty;
+};
+
+
+int exibir_qtd(struct Stack *&pilha) { return pilha->qty; }
+
+
+int verifica_cheia(struct Stack *&pilha) {
+
+  if (pilha->qty == pilha->max_items) {
+    return 1;
+  } else
+    return 0;
+}
+
+
+int verifica_vazia(struct Stack *&pilha) {
+
+  if (pilha->qty == 0) {
+    return 1;
+  } else
+    return 0;
+}
+
+
+int buscar(struct Stack *&pilha, int num) {
+
+  int count = 0;
+  int achou = 0;
+  struct Node *tmp = pilha->top;
+
+  while (count < pilha->qty) {
+    if (num == tmp->number) {
+      achou = 1;
+      break;
+    }
+    count++;
+  }
+
+  return achou;
+}
+
+
+void exibir_todos(struct Stack *&pilha) {
+
+  int count = 0;
+  struct Node *tmp = pilha->top;
+
+  printf("\n- Todos os Elementos Armazenados na Pilha:");
+
+  while (count < pilha->qty) {
+    printf("\n- [%d]", tmp->number);
+    tmp = tmp->next;
+
+    count++;
+  }
+}
+
+void empilha(struct Stack *&pilha, int num) {
+
+  if (pilha) {
+    struct Node *novo = (struct Node *)calloc(1, sizeof(struct Node));
+
+    novo->number = num;
+    novo->next = pilha->top;
+    pilha->top = novo;
+
+    pilha->qty++;
+
+    printf("\n- Valor empilhado!");
+  }
+}
+
+void desempilha(struct Stack *&pilha) {
+
+  int retirado;
+
+  if (pilha) {
+    struct Node *tmp = pilha->top;
+
+    if (tmp) {
+      pilha->top = pilha->top->next;
+      retirado = tmp->number;
+      free(tmp);
+
+      pilha->qty--;
+    }
+
+    printf("\n- Elemento Desempilhado! (Elemento: %d)", retirado);
+  }
+}
